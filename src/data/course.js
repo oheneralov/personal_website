@@ -1,0 +1,44 @@
+import a1Units from './a1';
+import a2Units from './a2';
+
+export const LEVELS = [
+  {
+    id: 'a1',
+    name: 'A1',
+    title: 'Beginner',
+    description:
+      'Start from zero: greetings, numbers, family, food and the building blocks of Polish grammar.',
+    units: a1Units,
+  },
+  {
+    id: 'a2',
+    name: 'A2',
+    title: 'Elementary',
+    description:
+      'Talk about the past and the future, travel, health, work and handle everyday situations.',
+    units: a2Units,
+  },
+];
+
+export const ALL_UNITS = LEVELS.flatMap((level) => level.units);
+
+export function findLevel(levelId) {
+  return LEVELS.find((level) => level.id === levelId) ?? null;
+}
+
+/**
+ * Looks a unit up by id and returns it with its level and the unit that follows it
+ * (which may belong to the next level), or null when the id is unknown.
+ */
+export function findUnit(unitId) {
+  const index = ALL_UNITS.findIndex((unit) => unit.id === unitId);
+  if (index === -1) {
+    return null;
+  }
+  const unit = ALL_UNITS[index];
+  return {
+    unit,
+    level: LEVELS.find((level) => level.units.includes(unit)),
+    nextUnit: ALL_UNITS[index + 1] ?? null,
+  };
+}
