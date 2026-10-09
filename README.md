@@ -5,6 +5,8 @@ A static website for English speakers learning Polish at CEFR levels A1 and A2.
 - 2 levels (A1, A2) with 8 units each
 - every unit has vocabulary and phrases with audio, a grammar note, flashcards and a quiz
 - a unit is completed by scoring at least 70% in its quiz
+- a short adventure game: a boy walks home and each obstacle (angry men, fire, a dragon…) is
+  solved by picking the right Polish reaction; obstacles live in `src/data/game.js`
 - progress is stored in the browser's `localStorage`; there is no backend and no sign-in
 
 ## Tech

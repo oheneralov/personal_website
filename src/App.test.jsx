@@ -39,6 +39,16 @@ describe('App', () => {
     ).toBe('Matuto ng Polish, hakbang-hakbang');
   });
 
+  it('offers the game as a third block on the home page and opens it', async () => {
+    const user = userEvent.setup();
+    renderApp('/');
+
+    await user.click(screen.getByRole('link', { name: /The way home/ }));
+
+    expect(screen.getByRole('heading', { level: 1, name: 'The way home' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Start walking' })).toBeTruthy();
+  });
+
   it('lists eight units on a level page', () => {
     renderApp('/level/a2');
 

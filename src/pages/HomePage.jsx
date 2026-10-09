@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import ProgressBar from '../components/ProgressBar';
 import { ALL_UNITS, LEVELS } from '../data/course';
+import ENCOUNTERS from '../data/game';
 import { useProgress } from '../context/ProgressContext';
+import { MAX_LIVES } from '../lib/game';
 import { countCompletedUnits, isUnitCompleted } from '../lib/progressStore';
 
 export default function HomePage() {
@@ -52,6 +54,24 @@ export default function HomePage() {
             />
           </Link>
         ))}
+        <Link className="card" to="/game">
+          <span className="badge">Game</span>
+          <h2>The way home</h2>
+          <p className="translation translation--title" lang="tl">
+            Ang daan pauwi
+          </p>
+          <p>
+            Help a small boy get home: meet angry men, a dragon and fire, and choose the right
+            Polish answer to get past each obstacle.
+          </p>
+          <p className="translation" lang="tl">
+            Tulungan ang isang batang lalaki na makauwi: harapin ang mga galit na lalaki, isang
+            dragon at apoy, at piliin ang tamang sagot sa Polish para malampasan ang bawat balakid.
+          </p>
+          <span className="card__status">
+            {ENCOUNTERS.length} obstacles · {MAX_LIVES} lives
+          </span>
+        </Link>
       </div>
     </>
   );

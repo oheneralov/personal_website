@@ -6,6 +6,27 @@ export const wordType = PropTypes.shape({
   tl: PropTypes.string,
 });
 
+export const encounterType = PropTypes.shape({
+  id: PropTypes.string.isRequired,
+  icon: PropTypes.string,
+  figure: PropTypes.oneOf(['angry-man', 'angry-men', 'guard', 'river', 'bear', 'dragon']),
+  pl: PropTypes.string.isRequired,
+  en: PropTypes.string.isRequired,
+  situation: PropTypes.string.isRequired,
+  situationTl: PropTypes.string.isRequired,
+  says: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      pl: PropTypes.string.isRequired,
+      en: PropTypes.string.isRequired,
+      tl: PropTypes.string.isRequired,
+      correct: PropTypes.bool,
+    }),
+  ).isRequired,
+  success: PropTypes.string.isRequired,
+  successTl: PropTypes.string.isRequired,
+});
+
 export const grammarType = PropTypes.shape({
   title: PropTypes.string.isRequired,
   points: PropTypes.arrayOf(PropTypes.string).isRequired,

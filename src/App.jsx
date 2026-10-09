@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/Layout';
+import GamePage from './pages/GamePage';
 import HomePage from './pages/HomePage';
 import LevelPage from './pages/LevelPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -12,6 +13,7 @@ export default function App() {
         <Route index element={<HomePage />} />
         <Route path="level/:levelId" element={<LevelPage />} />
         <Route path="unit/:unitId" element={<UnitPage />} />
+        <Route path="game" element={<GamePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

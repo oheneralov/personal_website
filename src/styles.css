@@ -10,6 +10,14 @@
   --success: #1a7f4b;
   --success-soft: #e4f5ec;
   --warning-soft: #fff4d6;
+  --sky: #d6ecfa;
+  --parchment: #fdf3d7;
+  --parchment-border: #e6cf94;
+  --grass: #9ccc8a;
+  --sun: #ffd54f;
+  --river-far: #8fd0f2;
+  --river-near: #2e7fc2;
+  --river-bank: #dcc88f;
   --radius: 12px;
   --shadow: 0 1px 2px rgb(0 0 0 / 6%), 0 4px 12px rgb(0 0 0 / 5%);
 
@@ -36,6 +44,14 @@
     --success: #5fd699;
     --success-soft: #173326;
     --warning-soft: #3b3115;
+    --sky: #1d2b3a;
+    --parchment: #33291a;
+    --parchment-border: #5c4a26;
+    --grass: #2f4a2b;
+    --sun: #e6c66a;
+    --river-far: #2f6a9c;
+    --river-near: #173e63;
+    --river-bank: #6b5d3a;
     --shadow: none;
   }
 }
@@ -732,7 +748,466 @@ nav a.active {
   background: var(--accent-soft);
 }
 
+/* Game */
+
+.game {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 720px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.game p {
+  margin: 0;
+}
+
+.game__hud {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.game__hud .progress {
+  flex: 1;
+}
+
+.game__lives {
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.game__scene {
+  position: relative;
+  height: 190px;
+  border-radius: var(--radius);
+  background: linear-gradient(var(--sky) 72%, var(--grass) 72%);
+  overflow: hidden;
+
+  /*
+   * Where the boy stops: just left of the obstacle. Each scene (named after its obstacle) sets
+   * how wide the obstacle is and how far from the right edge it stands. The boy never backs up
+   * past the start of the path, even where a narrow screen leaves him little room.
+   */
+  --obstacle-width: 80px;
+  --obstacle-right: 8%;
+  --boy-stop: max(6%, calc(100% - var(--obstacle-right) - var(--obstacle-width) - 37px));
+}
+
+.game__scene--angry-man {
+  --obstacle-width: 44px;
+}
+
+.game__scene--angry-men {
+  --obstacle-width: 108px;
+}
+
+.game__scene--hungry-dog {
+  --obstacle-width: 120px;
+}
+
+.game__scene--bear {
+  --obstacle-width: 84px;
+}
+
+/* The guard stands in front of the left tower of the gate. */
+.game__scene--guard {
+  --obstacle-width: 44px;
+  --obstacle-right: calc(3% + 108px);
+}
+
+/* The dragon lies in front of the house, breathing fire towards the boy. */
+.game__scene--dragon {
+  --obstacle-width: 130px;
+  --obstacle-right: calc(3% + 104px);
+}
+
+.game__scene--home {
+  --obstacle-width: 142px;
+  --obstacle-right: 3%;
+}
+
+.game__scenery {
+  position: absolute;
+  right: 3%;
+  bottom: 15%;
+  line-height: 0;
+}
+
+.game__house {
+  display: block;
+  height: 130px;
+}
+
+.game__gate {
+  display: block;
+  height: 132px;
+}
+
+.game__bear {
+  display: block;
+  height: 86px;
+}
+
+.game__scene--hungry-dog .game__obstacle {
+  font-size: 5.5rem;
+}
+
+.game__dragon {
+  font-size: 4.6rem;
+}
+
+/* The flame leaves the dragon's mouth sideways, towards the boy. */
+.game__flame {
+  align-self: flex-start;
+  font-size: 2.2rem;
+  transform: rotate(-90deg);
+  animation: flame-flicker 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes flame-flicker {
+  from {
+    transform: rotate(-90deg) scale(0.8);
+    opacity: 0.75;
+  }
+
+  to {
+    transform: rotate(-90deg) scale(1.15);
+    opacity: 1;
+  }
+}
+
+/* The river fills the right of the field; the boy stops on its near bank. */
+.game__scene--river {
+  --boy-stop: calc(100% - 228px);
+}
+
+.game__river {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 200px;
+  height: 28%;
+}
+
+.game__river svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.game__river-far {
+  stop-color: var(--river-far);
+}
+
+.game__river-near {
+  stop-color: var(--river-near);
+}
+
+.game__river-bank {
+  fill: var(--river-bank);
+}
+
+.game__river-ripples {
+  fill: none;
+  stroke: rgb(255 255 255 / 65%);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  animation: river-flow 2.4s ease-in-out infinite alternate;
+}
+
+.game__boat {
+  position: absolute;
+  bottom: 22%;
+  left: 12%;
+  font-size: 1.7rem;
+  line-height: 1;
+  transition: left 1.2s ease-in-out;
+}
+
+.game__boat--crossed {
+  left: 68%;
+}
+
+@keyframes river-flow {
+  from {
+    transform: translateX(-4px);
+  }
+
+  to {
+    transform: translateX(4px);
+  }
+}
+
+.game__sun {
+  position: absolute;
+  top: 12px;
+  left: 12%;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--sun);
+  box-shadow:
+    0 0 0 6px rgb(255 213 79 / 35%),
+    0 0 0 13px rgb(255 213 79 / 18%);
+}
+
+.game__flower {
+  position: absolute;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.game__boy,
+.game__obstacle {
+  position: absolute;
+  bottom: 14%;
+  line-height: 1;
+}
+
+.game__boy {
+  left: 6%;
+}
+
+/* Full-body people drawn by GameFigure; the boy is smaller than the grown-ups. */
+.figure {
+  display: block;
+  width: auto;
+  height: 88px;
+  overflow: visible;
+  stroke-linecap: round;
+}
+
+.figure--boy {
+  height: 62px;
+}
+
+.figure__leg,
+.figure__arm,
+.figure__fist {
+  transform-box: fill-box;
+  transform-origin: top center;
+}
+
+.figure__fist {
+  transform-origin: bottom left;
+}
+
+.game__boy--walking .figure__leg,
+.game__boy--walking .figure__arm {
+  animation: figure-swing 0.3s ease-in-out 4 alternate;
+}
+
+.game__boy--walking .figure__leg--right,
+.game__boy--walking .figure__arm--left {
+  animation-name: figure-swing-back;
+}
+
+.game__obstacle:not(.game__obstacle--cleared) .figure__fist {
+  animation: figure-shake 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes figure-swing {
+  from {
+    transform: rotate(-22deg);
+  }
+
+  to {
+    transform: rotate(22deg);
+  }
+}
+
+@keyframes figure-swing-back {
+  from {
+    transform: rotate(22deg);
+  }
+
+  to {
+    transform: rotate(-22deg);
+  }
+}
+
+@keyframes figure-shake {
+  from {
+    transform: rotate(-8deg);
+  }
+
+  to {
+    transform: rotate(10deg);
+  }
+}
+
+.game__boy--walking {
+  animation: game-walk 1.2s ease-out forwards;
+}
+
+.game__boy--home {
+  left: var(--boy-stop);
+  animation: boy-cheer 0.4s ease-out 6 alternate;
+}
+
+@keyframes boy-cheer {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-14px);
+  }
+}
+
+.game__obstacle {
+  display: flex;
+  align-items: flex-end;
+  right: var(--obstacle-right);
+  font-size: 3.6rem;
+  transition:
+    opacity 0.4s,
+    transform 0.4s;
+}
+
+/* A group of men stands shoulder to shoulder. */
+.game__obstacle .figure + .figure {
+  margin-left: -12px;
+}
+
+.game__obstacle--cleared {
+  opacity: 0.25;
+  transform: scale(0.7);
+}
+
+/* The boy bobs up and down while he walks from the start of the path to the obstacle. */
+@keyframes game-walk {
+  0% {
+    left: 6%;
+    transform: translateY(0);
+  }
+
+  25%,
+  75% {
+    transform: translateY(-8px);
+  }
+
+  50% {
+    transform: translateY(0);
+  }
+
+  100% {
+    left: var(--boy-stop);
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game__boy--walking {
+    left: var(--boy-stop);
+    animation: none;
+  }
+
+  .game__obstacle {
+    transition: none;
+  }
+
+  .figure__leg,
+  .figure__arm,
+  .figure__fist {
+    animation: none !important;
+  }
+
+  .game__river-ripples,
+  .game__flame,
+  .game__boy--home {
+    animation: none;
+  }
+
+  .game__boat {
+    transition: none;
+  }
+}
+
+.game__dialogue {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+/* The question and its answer options sit on a parchment panel, apart from the story text. */
+.game__choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--parchment-border);
+  border-radius: var(--radius);
+  background: var(--parchment);
+}
+
+.game__choices .quiz__instruction {
+  margin-top: 0;
+  color: var(--text);
+}
+
+/* Shown when the boy gets home. */
+.game__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem 1rem;
+  border: 2px solid var(--success);
+  border-radius: var(--radius);
+  background: var(--success-soft);
+  text-align: center;
+}
+
+.game__success h2 {
+  margin: 0;
+}
+
+.game__success-title {
+  color: var(--success);
+  font-size: 2.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.game__name-en {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.game__says {
+  padding: 0.6rem 0.9rem;
+  border-left: 4px solid var(--accent);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--accent-soft);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.game__option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.game__meaning {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
 @media (max-width: 480px) {
+  .game {
+    padding: 1rem;
+  }
+
   .panel {
     padding: 1rem;
   }

@@ -29,6 +29,7 @@ export default function Layout() {
                 {level.name}
               </NavLink>
             ))}
+            <NavLink to="/game">Game</NavLink>
           </nav>
         </div>
       </header>
