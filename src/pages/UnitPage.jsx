@@ -11,15 +11,26 @@ import { useProgress } from '../context/ProgressContext';
 import { getUnitProgress, isUnitCompleted } from '../lib/progressStore';
 import { unitType } from '../propTypes';
 
-const TABS = [
-  { id: 'learn', label: 'Vocabulary' },
-  { id: 'grammar', label: 'Grammar' },
-  { id: 'flashcards', label: 'Flashcards' },
-  { id: 'quiz', label: 'Quiz' },
+// Study material on the first row, practice activities on the second.
+const TAB_ROWS = [
+  {
+    id: 'study',
+    tabs: [
+      { id: 'learn', label: 'Vocabulary' },
+      { id: 'grammar', label: 'Grammar' },
+    ],
+  },
+  {
+    id: 'practice',
+    tabs: [
+      { id: 'flashcards', label: 'Flashcards' },
+      { id: 'quiz', label: 'Quiz' },
+    ],
+  },
 ];
 
 function UnitContent({ unit, levelId, levelName, nextUnit = null }) {
-  const [activeTab, setActiveTab] = useState(TABS[0].id);
+  const [activeTab, setActiveTab] = useState(TAB_ROWS[0].tabs[0].id);
   const { progress, recordQuiz, markWord } = useProgress();
   const unitProgress = getUnitProgress(progress, unit.id);
   const completed = isUnitCompleted(progress, unit.id);
@@ -49,19 +60,23 @@ function UnitContent({ unit, levelId, levelName, nextUnit = null }) {
       )}
 
       <div className="tabs" role="tablist" aria-label="Unit sections">
-        {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            type="button"
-            role="tab"
-            id={`tab-${tab.id}`}
-            aria-selected={activeTab === tab.id}
-            aria-controls="unit-panel"
-            className={`tabs__tab${activeTab === tab.id ? ' tabs__tab--active' : ''}`}
-            onClick={() => setActiveTab(tab.id)}
-          >
-            {tab.label}
-          </button>
+        {TAB_ROWS.map((row) => (
+          <div key={row.id} className="tabs__row" role="presentation">
+            {row.tabs.map((tab) => (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                id={`tab-${tab.id}`}
+                aria-selected={activeTab === tab.id}
+                aria-controls="unit-panel"
+                className={`tabs__tab${activeTab === tab.id ? ' tabs__tab--active' : ''}`}
+                onClick={() => setActiveTab(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         ))}
       </div>
 

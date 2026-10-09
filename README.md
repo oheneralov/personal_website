@@ -22,6 +22,11 @@ npm run preview       # serve the production build locally
 npm test              # unit and component tests
 npm run lint          # ESLint
 npm run format:check  # Prettier
+
+pm2 start npm \
+  --name app5474 \
+  --cwd ~/app5474/personal_website \
+  -- run preview -- --host 127.0.0.1 --port 5474
 ```
 
 ## Structure
