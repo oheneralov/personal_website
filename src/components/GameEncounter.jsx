@@ -10,21 +10,13 @@ function optionClass(option, tried, finished) {
 }
 
 /**
- * The dialogue shown when the boy meets an obstacle: what is going on and the Polish reactions
- * to choose from. Translations of an option stay hidden until it has been tried, or until the
- * encounter is `finished`, so the learner has to read the Polish first.
+ * The dialogue shown under the picture when the boy meets an obstacle: what the obstacle says and
+ * the Polish reactions to choose from. The English meaning of an option stays hidden until it
+ * has been tried, or until the encounter is `finished`, so the learner reads the Polish first.
  */
 export default function GameEncounter({ encounter, wrongChoices, finished, onChoose }) {
   return (
     <div className="game__dialogue">
-      <h2>
-        <span lang="pl">{encounter.pl}</span>
-        <span className="game__name-en"> — {encounter.en}</span>
-      </h2>
-      <p>{encounter.situation}</p>
-      <p className="quiz__translation" lang="tl">
-        {encounter.situationTl}
-      </p>
       {encounter.says && (
         <p className="game__says">
           <span lang="pl">„{encounter.says}”</span>
@@ -34,9 +26,6 @@ export default function GameEncounter({ encounter, wrongChoices, finished, onCho
 
       <div className="game__choices">
         <p className="quiz__instruction">What do you do? Choose the right answer in Polish.</p>
-        <p className="quiz__translation" lang="tl">
-          Ano ang gagawin mo? Piliin ang tamang sagot sa Polish.
-        </p>
         <div className="options">
           {encounter.options.map((option) => {
             const tried = wrongChoices.includes(option.pl);
@@ -49,14 +38,7 @@ export default function GameEncounter({ encounter, wrongChoices, finished, onCho
                 onClick={() => onChoose(option.pl)}
               >
                 <span lang="pl">{option.pl}</span>
-                {(tried || finished) && (
-                  <>
-                    <span className="game__meaning">{option.en}</span>
-                    <span className="game__meaning" lang="tl">
-                      {option.tl}
-                    </span>
-                  </>
-                )}
+                {(tried || finished) && <span className="game__meaning">{option.en}</span>}
               </button>
             );
           })}

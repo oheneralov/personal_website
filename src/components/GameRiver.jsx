@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import GameFigure from './GameFigure';
 
 // Ripple lines get longer towards the viewer, like the river itself.
 const RIPPLES = [
@@ -14,7 +15,8 @@ const RIPPLES = [
 
 /**
  * A wide river flowing across the field towards the viewer, with a boat waiting on the near
- * bank. Decorative, like the rest of the scene. The boat rows over once the river is `crossed`.
+ * bank. Decorative, like the rest of the scene. Once the river is `crossed` the boy sits in the
+ * boat and rides it to the far bank.
  */
 export default function GameRiver({ crossed }) {
   return (
@@ -40,7 +42,10 @@ export default function GameRiver({ crossed }) {
           ))}
         </g>
       </svg>
-      <span className={`game__boat${crossed ? ' game__boat--crossed' : ''}`}>🛶</span>
+      <span className={`game__boat${crossed ? ' game__boat--crossed' : ''}`}>
+        {crossed && <GameFigure variant="boy" />}
+        <span className="game__boat-hull">🛶</span>
+      </span>
     </span>
   );
 }

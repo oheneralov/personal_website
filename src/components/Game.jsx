@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import GameEncounter from './GameEncounter';
 import GameScene from './GameScene';
@@ -12,9 +12,18 @@ import {
   createGame,
   walkOn,
 } from '../lib/game';
+import playFailureSound from '../lib/sound';
 import { encounterType } from '../propTypes';
 
-export default function Game({ encounters = ENCOUNTERS, rng = Math.random }) {
+// How long the success message stays up before the boy walks on by himself.
+const WALK_ON_DELAY_MS = 2000;
+
+export default function Game({
+  encounters = ENCOUNTERS,
+  rng = Math.random,
+  walkOnDelayMs = WALK_ON_DELAY_MS,
+  onWrongAnswer = playFailureSound,
+}) {
   const [game, setGame] = useState(() => createGame(encounters, rng));
 
   const { status, index, lives, wrongChoices } = game;
@@ -29,6 +38,23 @@ export default function Game({ encounters = ENCOUNTERS, rng = Math.random }) {
   const restart = () => setGame(createGame(encounters, rng));
   const advance = () => setGame(walkOn);
 
+  const choose = (optionPl) => {
+    const next = chooseOption(game, optionPl);
+    if (next.lives < game.lives) {
+      onWrongAnswer();
+    }
+    setGame(next);
+  };
+
+  // A right answer needs no further click: after a pause to read the result the boy walks on.
+  useEffect(() => {
+    if (status !== GAME_STATUS.CLEARED) {
+      return undefined;
+    }
+    const timer = setTimeout(() => setGame(walkOn), walkOnDelayMs);
+    return () => clearTimeout(timer);
+  }, [status, index, walkOnDelayMs]);
+
   return (
     <section className="game">
       <div className="game__hud">
@@ -39,6 +65,17 @@ export default function Game({ encounters = ENCOUNTERS, rng = Math.random }) {
         <ProgressBar value={cleared} max={total} label="Obstacles passed" />
       </div>
 
+      {/* The obstacle is introduced above the picture; the choices follow below it. */}
+      {inEncounter && (
+        <div className="game__dialogue">
+          <h2>
+            <span lang="pl">{encounter.pl}</span>
+            <span className="game__name-en"> — {encounter.en}</span>
+          </h2>
+          <p>{encounter.situation}</p>
+        </div>
+      )}
+
       <GameScene status={status} index={index} encounter={encounter} />
 
       {status === GAME_STATUS.READY && (
@@ -46,11 +83,6 @@ export default function Game({ encounters = ENCOUNTERS, rng = Math.random }) {
           <p>
             Janek is walking home through the forest. Help him get past every obstacle by choosing
             the right Polish answer. Every wrong answer costs a heart — you have {MAX_LIVES}.
-          </p>
-          <p className="quiz__translation" lang="tl">
-            Naglalakad pauwi si Janek sa gubat. Tulungan siyang malampasan ang bawat balakid sa
-            pagpili ng tamang sagot sa Polish. Bawat maling sagot ay may katumbas na isang puso —
-            mayroon kang {MAX_LIVES}.
           </p>
           <button type="button" className="button" onClick={advance}>
             Start walking
@@ -63,7 +95,7 @@ export default function Game({ encounters = ENCOUNTERS, rng = Math.random }) {
           encounter={encounter}
           wrongChoices={wrongChoices}
           finished={status !== GAME_STATUS.ENCOUNTER}
-          onChoose={(optionPl) => setGame((current) => chooseOption(current, optionPl))}
+          onChoose={choose}
         />
       )}
 
@@ -77,17 +109,9 @@ export default function Game({ encounters = ENCOUNTERS, rng = Math.random }) {
         )}
         {status === GAME_STATUS.CLEARED && (
           <div className="feedback feedback--correct">
-            <div>
-              <p>
-                <strong lang="pl">Dobrze!</strong> {encounter.success}
-              </p>
-              <p className="quiz__translation" lang="tl">
-                {encounter.successTl}
-              </p>
-            </div>
-            <button type="button" className="button" onClick={advance}>
-              {index + 1 === total ? 'Go home' : 'Walk on'}
-            </button>
+            <p>
+              <strong lang="pl">Dobrze!</strong> {encounter.success}
+            </p>
           </div>
         )}
         {status === GAME_STATUS.LOST && (
@@ -107,9 +131,6 @@ export default function Game({ encounters = ENCOUNTERS, rng = Math.random }) {
               🏆 Sukces!
             </p>
             <h2>Success! Janek is home</h2>
-            <p className="quiz__translation" lang="tl">
-              Tagumpay! Nakauwi na si Janek.
-            </p>
             <p>
               You solved {game.firstTryCount} of {total} obstacles on the first try.
             </p>
@@ -126,4 +147,6 @@ export default function Game({ encounters = ENCOUNTERS, rng = Math.random }) {
 Game.propTypes = {
   encounters: PropTypes.arrayOf(encounterType),
   rng: PropTypes.func,
+  walkOnDelayMs: PropTypes.number,
+  onWrongAnswer: PropTypes.func,
 };

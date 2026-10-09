@@ -75,6 +75,8 @@ export default function GameScene({ status, index, encounter }) {
   const met = status !== GAME_STATUS.READY && !won;
   const cleared = status === GAME_STATUS.CLEARED;
   const isRiver = encounter.figure === 'river';
+  // While he crosses the river the boy is drawn in the boat instead of on the bank.
+  const boyInBoat = met && isRiver && cleared;
 
   return (
     <div className={`game__scene game__scene--${sceneName(status, encounter)}`} aria-hidden="true">
@@ -101,9 +103,11 @@ export default function GameScene({ status, index, encounter }) {
         </span>
       )}
       {/* Keyed by obstacle so the walking animation replays on the way to each one. */}
-      <span key={index} className={boyClass(status)}>
-        <GameFigure variant="boy" />
-      </span>
+      {!boyInBoat && (
+        <span key={index} className={boyClass(status)}>
+          <GameFigure variant="boy" />
+        </span>
+      )}
       {met && !isRiver && (
         <span
           key={`obstacle-${index}`}

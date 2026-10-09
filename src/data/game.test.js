@@ -29,16 +29,14 @@ describe('game content', () => {
     );
   });
 
-  it.each(ENCOUNTERS)('obstacle $id is translated into English and Filipino', (encounter) => {
-    expect(encounter.pl).toBeTruthy();
-    expect(encounter.en).toBeTruthy();
-    expect(encounter.situation).toBeTruthy();
-    expect(encounter.situationTl).toBeTruthy();
-    expect(encounter.success).toBeTruthy();
-    expect(encounter.successTl).toBeTruthy();
-    encounter.options.forEach((option) => {
-      expect(option.en, option.pl).toBeTruthy();
-      expect(option.tl, option.pl).toBeTruthy();
-    });
-  });
+  it.each(ENCOUNTERS)(
+    'obstacle $id has an English explanation for every Polish text',
+    (encounter) => {
+      expect(encounter.pl).toBeTruthy();
+      expect(encounter.en).toBeTruthy();
+      expect(encounter.situation).toBeTruthy();
+      expect(encounter.success).toBeTruthy();
+      encounter.options.forEach((option) => expect(option.en, option.pl).toBeTruthy());
+    },
+  );
 });

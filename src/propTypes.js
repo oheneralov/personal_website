@@ -13,18 +13,15 @@ export const encounterType = PropTypes.shape({
   pl: PropTypes.string.isRequired,
   en: PropTypes.string.isRequired,
   situation: PropTypes.string.isRequired,
-  situationTl: PropTypes.string.isRequired,
   says: PropTypes.string,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       pl: PropTypes.string.isRequired,
       en: PropTypes.string.isRequired,
-      tl: PropTypes.string.isRequired,
       correct: PropTypes.bool,
     }),
   ).isRequired,
   success: PropTypes.string.isRequired,
-  successTl: PropTypes.string.isRequired,
 });
 
 export const grammarType = PropTypes.shape({
