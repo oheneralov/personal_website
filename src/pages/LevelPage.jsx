@@ -33,7 +33,13 @@ export default function LevelPage() {
       <header className="page-header">
         <span className="badge">{level.name}</span>
         <h1>{level.title}</h1>
+        <p className="translation translation--title" lang="tl">
+          {level.titleTl}
+        </p>
         <p>{level.description}</p>
+        <p className="translation" lang="tl">
+          {level.descriptionTl}
+        </p>
         <ProgressBar
           value={countCompletedUnits(progress, level.units)}
           max={level.units.length}
@@ -49,7 +55,13 @@ export default function LevelPage() {
               <Link className={`card${status.done ? ' card--done' : ''}`} to={`/unit/${unit.id}`}>
                 <span className="card__eyebrow">Unit {unit.number}</span>
                 <h2>{unit.title}</h2>
+                <p className="translation translation--title" lang="tl">
+                  {unit.titleTl}
+                </p>
                 <p>{unit.summary}</p>
+                <p className="translation" lang="tl">
+                  {unit.summaryTl}
+                </p>
                 <span className="card__status">
                   {status.done ? '✓ ' : ''}
                   {status.label}

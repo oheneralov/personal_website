@@ -6,16 +6,22 @@ export const LEVELS = [
     id: 'a1',
     name: 'A1',
     title: 'Beginner',
+    titleTl: 'Baguhan',
     description:
       'Start from zero: greetings, numbers, family, food and the building blocks of Polish grammar.',
+    descriptionTl:
+      'Magsimula sa wala: mga pagbati, bilang, pamilya, pagkain at ang mga pangunahing sangkap ng gramatikang Polish.',
     units: a1Units,
   },
   {
     id: 'a2',
     name: 'A2',
     title: 'Elementary',
+    titleTl: 'Elementarya',
     description:
       'Talk about the past and the future, travel, health, work and handle everyday situations.',
+    descriptionTl:
+      'Pag-usapan ang nakaraan at ang hinaharap, paglalakbay, kalusugan, trabaho, at harapin ang mga pang-araw-araw na sitwasyon.',
     units: a2Units,
   },
 ];

@@ -30,7 +30,13 @@ describe('App', () => {
 
     expect(screen.getByRole('heading', { name: 'Beginner' })).toBeTruthy();
     expect(screen.getByRole('heading', { name: 'Elementary' })).toBeTruthy();
+    expect(screen.getByText('Baguhan')).toBeTruthy();
+    expect(screen.getByText(/^Magsimula sa wala/)).toBeTruthy();
     expect(screen.getByRole('link', { name: /Start learning: Greetings/ })).toBeTruthy();
+    expect(
+      screen.getByRole('heading', { name: 'Learn Polish, step by step' }).nextElementSibling
+        .textContent,
+    ).toBe('Matuto ng Polish, hakbang-hakbang');
   });
 
   it('lists eight units on a level page', () => {

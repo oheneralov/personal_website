@@ -3,6 +3,20 @@ const EN_TO_PL_COUNT = 3;
 const TYPING_COUNT = 2;
 const DISTRACTOR_COUNT = 3;
 
+// Every instruction is shown in English with its Filipino (Tagalog) translation underneath.
+const INSTRUCTIONS = {
+  plToEn: {
+    instruction: 'What does this mean in English?',
+    instructionTl: 'Ano ang ibig sabihin nito sa Ingles?',
+  },
+  enToPl: {
+    instruction: 'How do you say this in Polish?',
+    instructionTl: 'Paano ito sasabihin sa Polish?',
+  },
+  grammar: { instruction: 'Choose the correct form.', instructionTl: 'Piliin ang tamang anyo.' },
+  typing: { instruction: 'Type this in Polish.', instructionTl: 'I-type ito sa Polish.' },
+};
+
 export const ANSWER_RESULT = {
   CORRECT: 'correct',
   // Right word, but typed without the Polish diacritics.
@@ -32,10 +46,12 @@ function buildVocabularyQuestion(word, vocabulary, direction, rng) {
   return {
     id: `${direction}:${word.pl}`,
     kind: 'choice',
-    instruction:
-      direction === 'pl-en' ? 'What does this mean in English?' : 'How do you say this in Polish?',
+    ...(direction === 'pl-en' ? INSTRUCTIONS.plToEn : INSTRUCTIONS.enToPl),
     prompt: word[from],
+    // Only English prompts get a translation; a Polish prompt is the thing being learnt.
+    promptTl: direction === 'pl-en' ? null : word.tl,
     hint: null,
+    hintTl: null,
     options: shuffle([word[to], ...distractors], rng),
     answer: word[to],
   };
@@ -60,18 +76,22 @@ export function buildQuiz(unit, rng = Math.random) {
     ...unit.exercises.map((exercise) => ({
       id: `grammar:${exercise.prompt}:${exercise.answer}`,
       kind: 'choice',
-      instruction: 'Choose the correct form.',
+      ...INSTRUCTIONS.grammar,
       prompt: exercise.prompt,
+      promptTl: exercise.promptTl ?? null,
       hint: exercise.hint,
+      hintTl: exercise.hintTl,
       options: shuffle(exercise.options, rng),
       answer: exercise.answer,
     })),
     ...typed.map((word) => ({
       id: `type:${word.pl}`,
       kind: 'typing',
-      instruction: 'Type this in Polish.',
+      ...INSTRUCTIONS.typing,
       prompt: word.en,
+      promptTl: word.tl,
       hint: null,
+      hintTl: null,
       options: [],
       answer: word.pl,
     })),

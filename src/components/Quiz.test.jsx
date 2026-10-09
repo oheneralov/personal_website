@@ -58,6 +58,16 @@ describe('Quiz', () => {
     expect(screen.getByRole('heading', { name: 'Keep practising' })).toBeTruthy();
   });
 
+  it('shows the Filipino translation under the English instruction', () => {
+    render(<Quiz unit={unit} onComplete={vi.fn()} rng={createSeededRng(SEED)} />);
+    const [question] = buildQuiz(unit, createSeededRng(SEED));
+
+    const instruction = screen.getByText(question.instruction);
+
+    expect(instruction.nextElementSibling.textContent).toBe(question.instructionTl);
+    expect(instruction.nextElementSibling.getAttribute('lang')).toBe('tl');
+  });
+
   it('shows the correct answer after a wrong choice', async () => {
     const user = userEvent.setup();
     render(<Quiz unit={unit} onComplete={vi.fn()} rng={createSeededRng(SEED)} />);

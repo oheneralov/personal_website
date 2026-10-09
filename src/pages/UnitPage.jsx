@@ -45,7 +45,13 @@ function UnitContent({ unit, levelId, levelName, nextUnit = null }) {
           {levelName} · Unit {unit.number}
         </span>
         <h1>{unit.title}</h1>
+        <p className="translation translation--title" lang="tl">
+          {unit.titleTl}
+        </p>
         <p>{unit.summary}</p>
+        <p className="translation" lang="tl">
+          {unit.summaryTl}
+        </p>
       </header>
 
       {completed && (

@@ -94,8 +94,21 @@ export default function Quiz({ unit, onComplete, rng = Math.random }) {
       <ProgressBar value={index} max={total} label="Quiz progress" />
 
       <p className="quiz__instruction">{question.instruction}</p>
+      <p className="quiz__translation" lang="tl">
+        {question.instructionTl}
+      </p>
       <p className="quiz__prompt">{question.prompt}</p>
+      {question.promptTl && (
+        <p className="quiz__translation" lang="tl">
+          {question.promptTl}
+        </p>
+      )}
       {question.hint && <p className="quiz__hint">{question.hint}</p>}
+      {question.hintTl && (
+        <p className="quiz__translation" lang="tl">
+          {question.hintTl}
+        </p>
+      )}
 
       {question.kind === 'choice' ? (
         <div className="options">

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 export const wordType = PropTypes.shape({
   pl: PropTypes.string.isRequired,
   en: PropTypes.string.isRequired,
+  tl: PropTypes.string,
 });
 
 export const grammarType = PropTypes.shape({
@@ -19,13 +20,17 @@ export const unitType = PropTypes.shape({
   number: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   summary: PropTypes.string.isRequired,
+  titleTl: PropTypes.string.isRequired,
+  summaryTl: PropTypes.string.isRequired,
   vocabulary: PropTypes.arrayOf(wordType).isRequired,
   phrases: PropTypes.arrayOf(wordType).isRequired,
   grammar: grammarType.isRequired,
   exercises: PropTypes.arrayOf(
     PropTypes.shape({
       prompt: PropTypes.string.isRequired,
+      promptTl: PropTypes.string,
       hint: PropTypes.string.isRequired,
+      hintTl: PropTypes.string.isRequired,
       options: PropTypes.arrayOf(PropTypes.string).isRequired,
       answer: PropTypes.string.isRequired,
     }),

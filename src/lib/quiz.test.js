@@ -34,6 +34,29 @@ describe('buildQuiz', () => {
       });
   });
 
+  it.each(ALL_UNITS)('translates every English text of unit $id into Filipino', (unit) => {
+    const questions = buildQuiz(unit, createSeededRng(42));
+
+    questions.forEach((question) => {
+      expect(question.instructionTl).toBeTruthy();
+      expect(Boolean(question.hintTl)).toBe(Boolean(question.hint));
+    });
+    questions
+      .filter((question) => question.kind === 'typing' || question.id.startsWith('en-pl:'))
+      .forEach((question) => {
+        const word = unit.vocabulary.find((candidate) => candidate.en === question.prompt);
+        expect(question.promptTl).toBe(word.tl);
+      });
+  });
+
+  it('does not translate a Polish prompt', () => {
+    const questions = buildQuiz(ALL_UNITS[0], createSeededRng(42));
+
+    questions
+      .filter((question) => question.id.startsWith('pl-en:'))
+      .forEach((question) => expect(question.promptTl).toBeNull());
+  });
+
   it('tests each vocabulary word at most once', () => {
     const unit = ALL_UNITS[0];
 

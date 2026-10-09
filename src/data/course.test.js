@@ -10,6 +10,17 @@ describe('course content', () => {
     });
   });
 
+  it('translates level and unit titles and descriptions into Filipino', () => {
+    LEVELS.forEach((level) => {
+      expect(level.titleTl).toBeTruthy();
+      expect(level.descriptionTl).toBeTruthy();
+    });
+    ALL_UNITS.forEach((unit) => {
+      expect(unit.titleTl, unit.id).toBeTruthy();
+      expect(unit.summaryTl, unit.id).toBeTruthy();
+    });
+  });
+
   it('gives every unit a unique id', () => {
     const ids = ALL_UNITS.map((unit) => unit.id);
     expect(new Set(ids).size).toBe(ids.length);
@@ -20,6 +31,11 @@ describe('course content', () => {
     expect(new Set(unit.vocabulary.map((word) => word.pl)).size).toBe(unit.vocabulary.length);
     expect(new Set(unit.vocabulary.map((word) => word.en)).size).toBe(unit.vocabulary.length);
     expect(unit.phrases.length).toBeGreaterThan(0);
+  });
+
+  it.each(ALL_UNITS)('unit $id has a Filipino translation for every quiz text', (unit) => {
+    unit.vocabulary.forEach((word) => expect(word.tl, word.pl).toBeTruthy());
+    unit.exercises.forEach((exercise) => expect(exercise.hintTl, exercise.hint).toBeTruthy());
   });
 
   it.each(ALL_UNITS)('unit $id has well-formed grammar exercises', (unit) => {
