@@ -164,6 +164,7 @@ main.container {
 
 nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.25rem;
 }
 
@@ -1216,7 +1217,407 @@ nav a.active {
   font-weight: 400;
 }
 
+/* Tetris */
+
+.tetris {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 720px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.tetris p {
+  margin: 0;
+}
+
+.tetris__hud {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.tetris__hud > div {
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--radius);
+  background: var(--bg);
+  text-align: center;
+}
+
+.tetris__hud dt {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.tetris__hud dd {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.tetris__stat-en {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+/* The word comes first in the markup, so on a phone it sits above the board. */
+.tetris__play {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.tetris__side {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.tetris__side > * {
+  max-width: 100%;
+}
+
+.tetris__side > [aria-live] {
+  width: 100%;
+}
+
+.tetris__board-column {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* The board and the baskets under it, which continue its lanes. */
+.tetris__well {
+  --lane: clamp(58px, (100vw - 100px) / 4, 104px);
+  /* Sized by the height of the window so that every row stays in view. */
+  --row: clamp(26px, 4.4vh, 36px);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.tetris__board {
+  display: grid;
+  grid-template-columns: repeat(4, var(--lane));
+  grid-auto-rows: var(--row);
+  gap: 1px;
+  padding: 4px;
+  border: 2px solid var(--border);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  background: var(--bg);
+}
+
+.tetris__slot {
+  border-radius: 4px;
+  background: var(--surface);
+}
+
+/* Every other lane is tinted, so it is clear which basket a block is falling into. */
+.tetris__slot--shaded {
+  background: var(--sky);
+}
+
+/* A block carries its Polish word; the colours are light enough for dark text in both themes. */
+.tetris__block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  overflow: hidden;
+  color: #15171a;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.05;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.tetris__block--falling {
+  box-shadow: inset 0 0 0 2px rgb(0 0 0 / 40%);
+}
+
+.tetris__block--cyan {
+  background: #7fd6ea;
+}
+
+.tetris__block--purple {
+  background: #c9a2ea;
+}
+
+.tetris__block--green {
+  background: #8fd49e;
+}
+
+.tetris__block--red {
+  background: #f09a98;
+}
+
+.tetris__block--blue {
+  background: #9db8f0;
+}
+
+/* Lined up with the lanes of the board: its side border and padding, and the gap between lanes. */
+.tetris__baskets {
+  display: grid;
+  /* As wide as the lanes above: a long title wraps and makes the baskets taller, never wider. */
+  grid-template-columns: repeat(4, var(--lane));
+  gap: 1px;
+  padding: 0 4px 4px;
+  border: 2px solid var(--border);
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  background: var(--bg);
+}
+
+.tetris__basket {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.4rem;
+  padding: 0.35rem 0.2rem;
+  border: 2px solid #c99700;
+  border-top-style: dashed;
+  border-radius: 0 0 14px 14px;
+  /* The baskets are the only yellow thing in the game; the text stays dark in both themes. */
+  background: var(--sun);
+  color: #15171a;
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.tetris__basket:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.tetris__basket:disabled {
+  cursor: default;
+}
+
+.tetris__basket:disabled .tetris__basket-title {
+  opacity: 0.6;
+}
+
+.tetris__basket-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.tetris__paused {
+  background: var(--bg);
+}
+
+/* The paragraphs and the loading indicator of the message go one under the other. */
+.tetris__level-up {
+  flex-flow: column nowrap;
+  align-items: stretch;
+}
+
+.tetris__loading {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface);
+}
+
+/* Fills up while the next level loads; the component sets the duration. */
+.tetris__loading-bar {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--success);
+  transform-origin: left;
+  animation: tetris-loading linear forwards;
+}
+
+@keyframes tetris-loading {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* The house the levels build, with the family next to it. */
+.tetris__house {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.25rem 0.5rem;
+  margin: 0;
+}
+
+.tetris__house svg {
+  height: 90px;
+}
+
+.tetris__family {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.tetris__house figcaption {
+  width: 100%;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.tetris__hint {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted);
+}
+
+.tetris__review {
+  padding: 0.5rem 0;
+}
+
+.tetris__review-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.tetris__review-note--correct {
+  color: var(--success);
+}
+
+.tetris__review-note--wrong {
+  color: var(--accent);
+}
+
+.tetris__controls {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.tetris__control {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 1.3rem;
+  cursor: pointer;
+  /* Repeated taps on a phone should move the piece, not zoom the page. */
+  touch-action: manipulation;
+}
+
+.tetris__control:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+
+.tetris__control:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tetris__keys {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .tetris {
+    padding: 1rem;
+  }
+
+  .tetris__play {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tetris__board-column {
+    align-self: center;
+  }
+
+  .tetris__block {
+    font-size: 0.72rem;
+  }
+
+  /* There is no keyboard to explain on a phone. */
+  .tetris__keys {
+    display: none;
+  }
+}
+
+/* About page */
+
+.about {
+  max-width: 720px;
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.about h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.about__role {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.about__list {
+  margin: 0;
+}
+
+.about__list > div {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: 0.25rem 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.about__list > div:last-child {
+  border-bottom: 0;
+}
+
+.about__list dt {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.about__list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
 @media (max-width: 480px) {
+  .about {
+    padding: 1rem;
+  }
+
+  .about__list > div {
+    grid-template-columns: 1fr;
+  }
+
   .game {
     padding: 1rem;
   }

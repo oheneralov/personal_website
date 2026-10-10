@@ -7,6 +7,9 @@ A static website for English speakers learning Polish at CEFR levels A1 and A2.
 - a unit is completed by scoring at least 70% in its quiz
 - a short adventure game: a boy walks home and each obstacle (angry men, fire, a dragon…) is
   solved by picking the right Polish reaction; obstacles live in `src/data/game.js`
+- Guess the word, a Tetris-style game: every falling block shows a word from the course
+  vocabulary and is steered into one of four baskets titled with English translations; the right
+  basket scores, a wrong one fills up (rules in `src/lib/tetris.js`)
 - progress is stored in the browser's `localStorage`; there is no backend and no sign-in
 
 ## Tech

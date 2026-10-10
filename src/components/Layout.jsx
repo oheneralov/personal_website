@@ -30,6 +30,8 @@ export default function Layout() {
               </NavLink>
             ))}
             <NavLink to="/game">Game</NavLink>
+            <NavLink to="/tetris">Guess the word</NavLink>
+            <NavLink to="/about">About</NavLink>
           </nav>
         </div>
       </header>

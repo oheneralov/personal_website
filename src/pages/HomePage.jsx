@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom';
 import ProgressBar from '../components/ProgressBar';
 import { ALL_UNITS, LEVELS } from '../data/course';
 import ENCOUNTERS from '../data/game';
+import TETRIS_WORDS from '../data/tetris';
 import { useProgress } from '../context/ProgressContext';
 import { MAX_LIVES } from '../lib/game';
 import { countCompletedUnits, isUnitCompleted } from '../lib/progressStore';
+import { BASKET_COUNT } from '../lib/tetris';
 
 export default function HomePage() {
   const { progress } = useProgress();
@@ -70,6 +72,24 @@ export default function HomePage() {
           </p>
           <span className="card__status">
             {ENCOUNTERS.length} obstacles · {MAX_LIVES} lives
+          </span>
+        </Link>
+        <Link className="card" to="/tetris">
+          <span className="badge">Game</span>
+          <h2>Guess the word</h2>
+          <p className="translation translation--title" lang="tl">
+            Hulaan ang salita
+          </p>
+          <p>
+            Every falling block has a Polish word on it: steer it into the basket titled with the
+            right translation. Wrong baskets fill up — do not let one overflow.
+          </p>
+          <p className="translation" lang="tl">
+            May salitang Polish ang bawat bumabagsak na bloke: ihulog ito sa basket na may tamang
+            salin. Napupuno ang mga maling basket — huwag hayaang umapaw ang isa.
+          </p>
+          <span className="card__status">
+            {TETRIS_WORDS.length} words · {BASKET_COUNT} baskets
           </span>
         </Link>
       </div>

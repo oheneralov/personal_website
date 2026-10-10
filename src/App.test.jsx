@@ -49,6 +49,52 @@ describe('App', () => {
     expect(screen.getByRole('button', { name: 'Start walking' })).toBeTruthy();
   });
 
+  it('offers Guess the word on the home page and in the menu and opens it', async () => {
+    const user = userEvent.setup();
+    renderApp('/');
+
+    expect(
+      within(screen.getByRole('navigation', { name: 'Main' }))
+        .getByRole('link', { name: 'Guess the word' })
+        .getAttribute('href'),
+    ).toBe('/tetris');
+
+    await user.click(
+      within(screen.getByRole('main')).getByRole('link', { name: /Guess the word/ }),
+    );
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Guess the word' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Start' })).toBeTruthy();
+  });
+
+  it('opens the about page from the menu with the game and its author', async () => {
+    const user = userEvent.setup();
+    renderApp('/');
+
+    await user.click(
+      within(screen.getByRole('navigation', { name: 'Main' })).getByRole('link', { name: 'About' }),
+    );
+
+    expect(screen.getByRole('heading', { level: 1, name: 'About' })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'The game: The way home' })).toBeTruthy();
+    expect(screen.getByRole('heading', { name: 'The author: Oleksandr Generalov' })).toBeTruthy();
+    expect(screen.getByRole('link', { name: 'Play the game' }).getAttribute('href')).toBe('/game');
+  });
+
+  it('keeps the author email out of the about page until the visitor asks for it', async () => {
+    const user = userEvent.setup();
+    const address = ['oheneralov', 'gmail.com'].join('@');
+    renderApp('/about');
+
+    expect(document.body.innerHTML).not.toContain('gmail');
+
+    await user.click(screen.getByRole('button', { name: 'Show email' }));
+
+    expect(screen.getByRole('link', { name: address }).getAttribute('href')).toBe(
+      `mailto:${address}`,
+    );
+  });
+
   it('lists eight units on a level page', () => {
     renderApp('/level/a2');
 
