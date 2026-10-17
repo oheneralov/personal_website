@@ -5,6 +5,7 @@ import GamePage from './pages/GamePage';
 import HomePage from './pages/HomePage';
 import LevelPage from './pages/LevelPage';
 import NotFoundPage from './pages/NotFoundPage';
+import RedHatPage from './pages/RedHatPage';
 import TetrisPage from './pages/TetrisPage';
 import UnitPage from './pages/UnitPage';
 
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="unit/:unitId" element={<UnitPage />} />
         <Route path="game" element={<GamePage />} />
         <Route path="tetris" element={<TetrisPage />} />
+        <Route path="red-hat" element={<RedHatPage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

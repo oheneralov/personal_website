@@ -67,6 +67,22 @@ describe('App', () => {
     expect(screen.getByRole('button', { name: 'Start' })).toBeTruthy();
   });
 
+  it('offers Red Hat on the home page and in the menu and opens it', async () => {
+    const user = userEvent.setup();
+    renderApp('/');
+
+    expect(
+      within(screen.getByRole('navigation', { name: 'Main' }))
+        .getByRole('link', { name: 'Red Hat' })
+        .getAttribute('href'),
+    ).toBe('/red-hat');
+
+    await user.click(within(screen.getByRole('main')).getByRole('link', { name: /Red Hat/ }));
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Red Hat' })).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Start' })).toBeTruthy();
+  });
+
   it('opens the about page from the menu with the game and its author', async () => {
     const user = userEvent.setup();
     renderApp('/');

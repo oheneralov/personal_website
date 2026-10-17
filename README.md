@@ -10,6 +10,9 @@ A static website for English speakers learning Polish at CEFR levels A1 and A2.
 - Guess the word, a Tetris-style game: every falling block shows a word from the course
   vocabulary and is steered into one of four baskets titled with English translations; the right
   basket scores, a wrong one fills up (rules in `src/lib/tetris.js`)
+- Red Hat, a tale to watch: Little Red Riding Hood walks to her grandmother, meets the wolf and
+  says what she sees in simple Polish, read aloud by the browser; the story lives in
+  `src/data/redHat.js`
 - progress is stored in the browser's `localStorage`; there is no backend and no sign-in
 
 ## Tech

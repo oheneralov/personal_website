@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import ProgressBar from '../components/ProgressBar';
 import { ALL_UNITS, LEVELS } from '../data/course';
 import ENCOUNTERS from '../data/game';
+import RED_HAT_SCENES from '../data/redHat';
 import TETRIS_WORDS from '../data/tetris';
 import { useProgress } from '../context/ProgressContext';
 import { MAX_LIVES } from '../lib/game';
@@ -91,6 +92,22 @@ export default function HomePage() {
           <span className="card__status">
             {TETRIS_WORDS.length} words · {BASKET_COUNT} baskets
           </span>
+        </Link>
+        <Link className="card" to="/red-hat">
+          <span className="badge">Game</span>
+          <h2>Red Hat</h2>
+          <p className="translation translation--title" lang="tl">
+            Pulang Talukbong
+          </p>
+          <p>
+            Watch Little Red Riding Hood walk to her grandmother and meet the wolf: every scene is
+            told and read aloud in simple Polish.
+          </p>
+          <p className="translation" lang="tl">
+            Panoorin si Pulang Talukbong habang naglalakad papunta sa kanyang lola at nakakasalubong
+            ang lobo: bawat eksena ay isinasalaysay at binabasa nang malakas sa simpleng Polish.
+          </p>
+          <span className="card__status">{RED_HAT_SCENES.length} scenes · just watch</span>
         </Link>
       </div>
     </>

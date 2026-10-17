@@ -1562,6 +1562,246 @@ nav a.active {
   }
 }
 
+/* Red Hat */
+
+.red-hat {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 720px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.red-hat p {
+  margin: 0;
+}
+
+.red-hat__scene-title {
+  font-weight: 700;
+}
+
+.red-hat__scene {
+  position: relative;
+  height: 280px;
+  border-radius: var(--radius);
+  background: linear-gradient(var(--sky) 70%, var(--grass) 70%);
+  overflow: hidden;
+}
+
+/* Grandma's room: a warm wall and a wooden floor, the same in both themes. */
+.red-hat__scene--indoor {
+  background: linear-gradient(#f3e2bd 70%, #b98a5a 70%);
+}
+
+/* The sun shines over every outdoor scene, in the corner away from the path's start. */
+.red-hat__sun {
+  position: absolute;
+  top: 20px;
+  right: 9%;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--sun);
+  box-shadow:
+    0 0 0 8px rgb(255 213 79 / 35%),
+    0 0 0 18px rgb(255 213 79 / 18%);
+}
+
+.red-hat__house {
+  position: absolute;
+  bottom: 14%;
+  line-height: 0;
+}
+
+.red-hat__house .game__house {
+  height: 110px;
+}
+
+.red-hat__house--left {
+  left: 3%;
+}
+
+.red-hat__house--right {
+  right: 3%;
+}
+
+.red-hat__prop,
+.red-hat__girl {
+  position: absolute;
+  line-height: 1;
+}
+
+.red-hat__prop .figure {
+  height: 84px;
+}
+
+.red-hat__prop .figure--wolf {
+  height: 58px;
+}
+
+/*
+ * Grandma's bed is 160x90px; the mattress top is 44px above its bottom. The wolf lies on it with
+ * his head on the pillow, and the quilt is drawn over him.
+ */
+.red-hat__bed {
+  position: relative;
+  display: block;
+  width: 160px;
+  height: 90px;
+}
+
+.red-hat__bed svg {
+  display: block;
+  width: 160px;
+  height: 90px;
+}
+
+.red-hat__bed .red-hat__bed-quilt {
+  position: absolute;
+  inset: 0;
+}
+
+.red-hat__bed-sleeper {
+  position: absolute;
+  bottom: 36px;
+  left: 14px;
+  line-height: 0;
+}
+
+.red-hat__bed .figure--wolf {
+  width: auto;
+  height: 44px;
+}
+
+/* The wolf turns round to run away. */
+.red-hat__prop--fleeing .figure--wolf {
+  transform: scaleX(-1);
+}
+
+/* The wolf runs out of Grandma's room. */
+.red-hat__prop--fleeing {
+  animation: red-hat-flee 1.6s ease-in 0.8s forwards;
+}
+
+.red-hat__girl {
+  bottom: 12%;
+  left: var(--to);
+}
+
+.red-hat__girl .figure {
+  height: 56px;
+}
+
+.red-hat__girl--walking {
+  animation: red-hat-walk 2.4s ease-out;
+}
+
+.red-hat__girl--walking .figure__leg {
+  animation: figure-swing 0.4s ease-in-out 6 alternate;
+}
+
+.red-hat__girl--walking .figure__leg--right {
+  animation-name: figure-swing-back;
+}
+
+/* Whoever is speaking bobs, so it is clear who says the line. */
+.red-hat__speaking {
+  animation: red-hat-speak 0.45s ease-in-out infinite alternate;
+}
+
+.red-hat__girl--walking.red-hat__speaking {
+  animation:
+    red-hat-walk 2.4s ease-out,
+    red-hat-speak 0.45s ease-in-out 2.4s infinite alternate;
+}
+
+@keyframes red-hat-walk {
+  from {
+    left: var(--from);
+  }
+
+  to {
+    left: var(--to);
+  }
+}
+
+@keyframes red-hat-speak {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes red-hat-flee {
+  to {
+    transform: translateX(160px);
+  }
+}
+
+.red-hat__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.red-hat__dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.red-hat__speaker {
+  font-weight: 700;
+}
+
+.red-hat__speaker-en,
+.red-hat__translation,
+.red-hat__progress {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.red-hat__line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.red-hat__progress {
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .red-hat {
+    padding: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .red-hat__girl--walking,
+  .red-hat__girl--walking .figure__leg,
+  .red-hat__speaking,
+  .red-hat__prop--fleeing {
+    animation: none !important;
+  }
+
+  .red-hat__prop--fleeing {
+    display: none;
+  }
+}
+
 /* About page */
 
 .about {
